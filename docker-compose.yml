@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  # 1. Flask Backend Service (Server & AI)
+  server:
+    build:
+      context: ./server # Look for Dockerfile.flask inside the server folder
+      dockerfile: Dockerfile.flask
+    container_name: shotweave_server
+    ports:
+      - "5000:5000" # Maps container port 5000 to host port 5000
+    volumes:
+      - ./server:/app # Mounts the source code for hot reloading (optional, but useful)
+    environment:
+      # Injects MONGO_URI from the root .env file.
+      # It uses the special hostname 'host-gateway' to access services on your Windows machine.
+      MONGO_URI: ${MONGO_URI}
+    # CRITICAL FIX for connecting to the Windows Host MongoDB
+    extra_hosts:
+      - "host.docker.internal:host-gateway" 
+
+  # 2. React Frontend Service (Client)
+  client:
+    build:
+      context: . # Build context starts from the root
+      dockerfile: src/Dockerfile.react # Points to the Dockerfile in the client subfolder
+    container_name: shotweave_client
+    # Map React's Nginx port (80) to 3000 for browser access
+    ports:
+      - "3000:80"
+    depends_on:
+      - server # Ensure the API starts before the front end tries to connect
