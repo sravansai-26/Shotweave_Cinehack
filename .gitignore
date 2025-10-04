@@ -1,0 +1,29 @@
+# -----------------------------------------------------------
+# Dependencies and Environments (CRITICAL)
+# -----------------------------------------------------------
+/node_modules
+/server/venv
+
+# Python artifacts
+**/__pycache__
+*.pyc
+*.pyd
+
+# Node/Vite build artifacts
+/dist
+/build
+.vite
+.npm
+
+# -----------------------------------------------------------
+# Environment and Credentials (CRITICAL SECURITY)
+# -----------------------------------------------------------
+.env # Contains your MongoDB URI and secrets
+
+# -----------------------------------------------------------
+# Operating System and IDE Files
+# -----------------------------------------------------------
+.DS_Store             # Mac OS
+npm-debug.log*
+yarn-error.log*
+.vscode/              # VS Code workspace settings (optional)
